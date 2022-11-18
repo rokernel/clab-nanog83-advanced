@@ -154,7 +154,7 @@ jobs:
                 --path /network-instance[name=default]/protocols/bgp/neighbor/ipv4-unicast/oper-state | grep neighbor | wc -l
                 )
 
-              if [ "$num_neighbors" -ne "6" ]
+              if [ "$num_neighbors" -ne "4" ]
               then
                 printf "unexpected number of neighbors for node $node : $num_neighbors (ノ ゜Д゜)ノ ︵ ┻━┻\n"
                 exit 1
