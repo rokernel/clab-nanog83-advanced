@@ -7,17 +7,23 @@ on:
 
 jobs:
   install_containerlab:
-    runs-on: self-hosted
+    runs-on: 
+      - self-hosted
+      - gnmic
     steps:
       - run: bash -c "$(curl -sL https://get-clab.srlinux.dev)"
   
   install_gnmic:
-    runs-on: self-hosted
+    runs-on: 
+      - self-hosted
+      - gnmic
     steps:
       - run: bash -c "$(curl -sL https://get-gnmic.kmrd.dev)"
   
   deploy_lab:
-    runs-on: self-hosted
+    runs-on: 
+      - self-hosted
+      - gnmic
     needs:
       - install_containerlab
       - install_gnmic
@@ -26,7 +32,9 @@ jobs:
       - run: sudo clab deploy -t nanog83.clab.yaml --reconfigure
   
   configure_interfaces:
-    runs-on: self-hosted
+    runs-on: 
+      - self-hosted
+      - gnmic
     needs:
       - deploy_lab
     steps:
@@ -42,7 +50,9 @@ jobs:
                 --request-vars config/1.interfaces/interfaces_template_vars.yaml
   
   configure_subinterfaces:
-    runs-on: self-hosted
+    runs-on: 
+      - self-hosted
+      - gnmic
     needs:
       - configure_interfaces
     steps:
@@ -58,7 +68,9 @@ jobs:
                 --request-vars config/1.interfaces/interfaces_template_vars.yaml
 
   configure_routing_policy:
-    runs-on: self-hosted
+    runs-on: 
+      - self-hosted
+      - gnmic
     needs:
       - deploy_lab
     steps:
@@ -75,7 +87,9 @@ jobs:
                 --request-vars config/2.routing-policy/routing_policy_vars.yaml
 
   configure_network_instance:
-    runs-on: self-hosted
+    runs-on: 
+      - self-hosted
+      - gnmic
     needs:
       - configure_subinterfaces
       - configure_routing_policy
@@ -92,7 +106,9 @@ jobs:
                 --request-vars config/3.network-instance/network_instance_template_vars.yaml
 
   configure_bgp:
-    runs-on: self-hosted
+    runs-on: 
+      - self-hosted
+      - gnmic
     needs:
       - configure_network_instance
     steps:
@@ -108,7 +124,9 @@ jobs:
                 --request-vars config/3.network-instance/network_instance_template_vars.yaml
   
   check_bgp_status:
-    runs-on: self-hosted
+    runs-on: 
+      - self-hosted
+      - gnmic
     needs:
       - configure_bgp
     steps:
@@ -135,7 +153,9 @@ jobs:
           done
 
   check_bgp_neighbors:
-    runs-on: self-hosted
+    runs-on: 
+      - self-hosted
+      - gnmic
     needs:
       - check_bgp_status
     steps:
